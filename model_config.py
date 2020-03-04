@@ -51,7 +51,7 @@ class ResNeXt3D_Config:
             "train":{
             "name": "ucf101",
                 "split": "train",
-                "batchsize_per_replica": 5,
+                "batchsize_per_replica": 16,
                 "use_shuffle": True,
                 "num_samples": None,
                 "frames_per_clip": 32,
