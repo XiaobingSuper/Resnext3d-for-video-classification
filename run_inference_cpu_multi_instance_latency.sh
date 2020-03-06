@@ -27,7 +27,7 @@ for i in $(seq 1 $LAST_INSTANCE); do
     LOG_i=inference_cpu_bs${BATCH_SIZE}_ins${i}.txt
 
     echo "### running on instance $i, numa node $numa_node_i, core list {$start_core_i, $end_core_i}..."
-    numactl --physcpubind=$start_core_i-$end_core_i --membind=$numa_node_i python main.py -e UCF101 \
+    numactl --physcpubind=$start_core_i-$end_core_i --membind=$numa_node_i python -u main.py -e UCF101 \
         --batch-size-eval $BATCH_SIZE \
         --no-cuda \
         2>&1 | tee $LOG_i &
