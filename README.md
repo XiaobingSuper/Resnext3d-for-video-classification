@@ -1,5 +1,5 @@
 # Resnext3d-for-video-classification
-Using [ClassyVision](https://github.com/facebookresearch/ClassyVision) to implement Resnext3d model, refer to [How to do video classification](https://classyvision.ai/tutorials/video_classification) part, so you can see the details how to do a video classification tast using ClassyVision
+Using [ClassyVision](https://github.com/facebookresearch/ClassyVision) to implement Resnext3d model, refer to [How to do video classification](https://classyvision.ai/tutorials/video_classification) part, so you can see the details how to do a video classification task using ClassyVision
 
 ## Requirements(suggest install the following package using source code)
 
@@ -10,17 +10,22 @@ Using [ClassyVision](https://github.com/facebookresearch/ClassyVision) to implem
   
 ## Usage
 ```
-usage: main.py [--num_epochs N] [-e] [--no-cuda] DIR
+usage: main.py [-h] [--num_epochs N] [-bt N] [-be N] [-p N] [-e] [--no-cuda]
+               DIR
 
 PyTorch Video UCF101 Training
 
 positional arguments:
-  DIR             path to video files
+  DIR                   path to video files
 
 optional arguments:
-  -h, --help      show this help message and exit
-  --num_epochs N  number of total epochs to run
-  -e, --evaluate  evaluate model on validation set
-  --no-cuda       disable CUDA
-
+  -h, --help            show this help message and exit
+  --num_epochs N        number of total epochs to run
+  -bt N, --batch-size-train N
+                        bathch size of for traing setp
+  -be N, --batch-size-eval N
+                        bathch size of for eval setp
+  -p N, --print-freq N  print frequency (default: 10)
+  -e, --evaluate        evaluate model on validation set
+  --no-cuda             disable CUDA
 ```
