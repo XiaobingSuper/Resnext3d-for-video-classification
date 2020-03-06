@@ -24,9 +24,12 @@ parser.add_argument('video_dir', metavar='DIR',
                     help='path to video files')
 parser.add_argument('--num_epochs', default=300, type=int, metavar='N',
                     help='number of total epochs to run')
-parser.add_argument('-b', '--batch-size', default=10, type=int,
+parser.add_argument('-bt', '--batch-size-train', default=16, type=int,
                     metavar='N',
                     help="bathch size of for traing setp")
+parser.add_argument('-be', '--batch-size-eval', default=10, type=int,
+                    metavar='N',
+                    help="bathch size of for eval setp")
 parser.add_argument('-p', '--print-freq', default=10, type=int,
                     metavar='N', help='print frequency (default: 10)')
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
@@ -54,8 +57,15 @@ def main():
     resnext3d_configs.setUp()
 
     datasets = {}
-    datasets["train"] = build_dataset(resnext3d_configs.dataset_configs["train"])
-    datasets["test"] = build_dataset(resnext3d_configs.dataset_configs["test"])
+    dataset_train_config = resnext3d_configs.dataset_configs["train"]
+    dataset_test_config = resnext3d_configs.dataset_configs["test"]
+    dataset_train_config["batchsize_per_replica"] = args.batch_size_train
+    # For testing, batchsize per replica should be equal to clips_per_video
+    dataset_test_config["batchsize_per_replica"] = args.batch_size_eval
+    dataset_test_config["clips_per_video"] = args.batch_size_eval
+
+    datasets["train"] = build_dataset(dataset_train_config)
+    datasets["test"] = build_dataset(dataset_test_config)
 
     model = build_model(resnext3d_configs.model_configs)
     meters = build_meters(resnext3d_configs.meters_configs)

@@ -75,6 +75,7 @@ class ResNeXt3D_Config:
                 "name": "ucf101",
                 "split": "test",
                 "batchsize_per_replica": 10,
+                #"batchsize_per_replica": 1,
                 "use_shuffle": False,
                 "num_samples": None,
                 "frames_per_clip": 32,
