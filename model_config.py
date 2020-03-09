@@ -115,13 +115,13 @@ class ResNeXt3D_Config:
                  "schedulers": [
                      {
                          "name": "linear",
-                         "start_lr": 0.005,
-                         "end_lr": 0.04
+                         "start_value": 0.005,
+                         "end_value": 0.04
                      },
                      {
                          "name": "cosine",
-                         "start_lr": 0.04,
-                         "end_lr": 0.00004
+                         "start_value": 0.04,
+                         "end_value": 0.00004
                      }
                  ],
                  "lengths": [0.13, 0.87],
