@@ -6,6 +6,7 @@ Using [ClassyVision](https://github.com/facebookresearch/ClassyVision) to implem
 - Install [PyTorch](https://github.com/pytorch/pytorch)
 - Install [TorchVison](https://github.com/pytorch/vision)
 - Install [ClassyVision](https://github.com/facebookresearch/ClassyVision)
+- Install [PyAV](https://github.com/mikeboers/PyAV): `conda install av -c conda-forge`
 - Download the Video dataset: [UCF101](https://www.crcv.ucf.edu/data/UCF101.php): see [How to do video classification](https://classyvision.ai/tutorials/video_classification)
   
 ## Usage
