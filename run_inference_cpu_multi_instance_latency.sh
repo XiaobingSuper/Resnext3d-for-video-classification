@@ -1,10 +1,18 @@
+#!/bin/sh
+
+ARGS=""
+if [[ "$1" == "--mkldnn" ]]; then
+    ARGS="$ARGS --mkldnn"
+    echo "### cache input/output in mkldnn format"
+    shift
+fi
+
 CORES=`lscpu | grep Core | awk '{print $4}'`
 SOCKETS=`lscpu | grep Socket | awk '{print $2}'`
 TOTAL_CORES=`expr $CORES \* $SOCKETS`
 
 # change this number to adjust number of instances
 CORES_PER_INSTANCE=4
-
 
 KMP_SETTING="KMP_AFFINITY=granularity=fine,compact,1,0"
 
@@ -29,7 +37,7 @@ for i in $(seq 1 $LAST_INSTANCE); do
     echo "### running on instance $i, numa node $numa_node_i, core list {$start_core_i, $end_core_i}..."
     numactl --physcpubind=$start_core_i-$end_core_i --membind=$numa_node_i python -u main.py -e UCF101 \
         --batch-size-eval $BATCH_SIZE \
-        --no-cuda \
+        --no-cuda $ARGS \
         2>&1 | tee $LOG_i &
 done
 
@@ -42,7 +50,7 @@ LOG_0=inference_cpu_bs${BATCH_SIZE}_ins0.txt
 echo "### running on instance 0, numa node $numa_node_0, core list {$start_core_0, $end_core_0}...\n\n"
 numactl --physcpubind=$start_core_0-$end_core_0 --membind=$numa_node_0 python -u main.py -e UCF101 \
         --batch-size-eval $BATCH_SIZE \
-        --no-cuda \
+        --no-cuda $ARGS\
         2>&1 | tee $LOG_0
 
 sleep 10

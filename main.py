@@ -12,6 +12,7 @@ from classy_vision.hooks import CheckpointHook
 from classy_vision.hooks import LossLrMeterLoggingHook
 
 import torch
+from torch.utils import mkldnn as mkldnn_utils
 import time
 import os
 import model_config
@@ -26,7 +27,7 @@ parser.add_argument('--num_epochs', default=300, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('-bt', '--batch-size-train', default=16, type=int,
                     metavar='N',
-                    help="bathch size of for traing setp")
+                    help="bathch size of for training setp")
 parser.add_argument('-be', '--batch-size-eval', default=10, type=int,
                     metavar='N',
                     help="bathch size of for eval setp")
@@ -36,15 +37,24 @@ parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                     help='evaluate model on validation set')
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='disable CUDA')
-
+parser.add_argument('--mkldnn', action='store_true', default=False,
+                    help='use mkldnn backend')
 
 def main():
     args = parser.parse_args()
     print(args)
     args.cuda = not args.no_cuda and torch.cuda.is_available()
 
+    if args.cuda and argd.mkldnn:
+        assert False, "We can not runing this work on GPU backend and MKLDNN backend \
+                please set one backend.\n"
+
     if args.cuda:
-        print("Using GPU device to do this work")
+        print("Using GPU backend to do this work.\n")
+    elif args.mkldnn:
+        print("Using MKLDNN backend to do this work.\n")
+    else:
+        print("Using native CPU backend to do this work.\n")
 
     # set it to the folder where video files are saved
     video_dir = args.video_dir + "/UCF-101"
@@ -111,7 +121,7 @@ def validata(datasets, model, loss, args):
 
     task.eval_step(use_gpu = args.cuda, local_variables = local_variables)
     '''
-    print("Running evaluation step")
+    print("Running evaluation step.\n")
     iterator = datasets["test"].iterator(shuffle_seed = 0,
                                          epoch= 0,
                                          num_workers=0,  # 0 indicates to do dataloading on the master process
@@ -130,6 +140,9 @@ def validata(datasets, model, loss, args):
     model = model.eval()
     if args.cuda:
         model = model.cuda()
+    elif args.mkldnn:
+        model = mkldnn_utils.to_mkldnn(model)
+        # TODO using mkldnn weight cache
 
     with torch.no_grad():
         end = _time(args.cuda)
@@ -142,8 +155,15 @@ def validata(datasets, model, loss, args):
                 inputs["video"] = inputs["video"].cuda()
                 inputs["audio"] = inputs["audio"].cuda()
                 target = target.cuda()
+            elif args.mkldnn:
+                inputs["video"] = inputs["video"].to_mkldnn()
+                inputs["audio"] = inputs["audio"].to_mkldnn()
 
             output = model(inputs)
+
+            if args.mkldnn:
+                output = output.to_dense()
+
             loss_data = loss(output, target)
             # TODO get accuracy
             #print(meters)
