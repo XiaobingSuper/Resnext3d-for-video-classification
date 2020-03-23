@@ -13,12 +13,13 @@ from classy_vision.hooks import LossLrMeterLoggingHook
 
 import torch
 from torch.utils import mkldnn as mkldnn_utils
-import time
-import os
 import model_config
+from mkldnn_fully_convolutional_linear_head import MkldnnFullyConvolutionalLinear
+
 import argparse
 import shutil
-
+import time
+import os
 
 parser = argparse.ArgumentParser(description='PyTorch Video UCF101 Training')
 parser.add_argument('video_dir', metavar='DIR',
@@ -67,22 +68,37 @@ def main():
     resnext3d_configs.setUp()
 
     datasets = {}
-    dataset_train_config = resnext3d_configs.dataset_configs["train"]
-    dataset_test_config = resnext3d_configs.dataset_configs["test"]
-    dataset_train_config["batchsize_per_replica"] = args.batch_size_train
+    dataset_train_configs = resnext3d_configs.dataset_configs["train"]
+    dataset_test_configs = resnext3d_configs.dataset_configs["test"]
+    dataset_train_configs["batchsize_per_replica"] = args.batch_size_train
     # For testing, batchsize per replica should be equal to clips_per_video
-    dataset_test_config["batchsize_per_replica"] = args.batch_size_eval
-    dataset_test_config["clips_per_video"] = args.batch_size_eval
+    dataset_test_configs["batchsize_per_replica"] = args.batch_size_eval
+    dataset_test_configs["clips_per_video"] = args.batch_size_eval
 
-    datasets["train"] = build_dataset(dataset_train_config)
-    datasets["test"] = build_dataset(dataset_test_config)
+    datasets["train"] = build_dataset(dataset_train_configs)
+    datasets["test"] = build_dataset(dataset_test_configs)
 
     model = build_model(resnext3d_configs.model_configs)
     meters = build_meters(resnext3d_configs.meters_configs)
     loss = build_loss({"name": "CrossEntropyLoss"})
     optimizer = build_optimizer(resnext3d_configs.optimizer_configs)
 
-    #print(model)
+    # there some ops are not supported by MKLDNN, so convert input to CPU tensor
+    if args.mkldnn:
+        heads_configs = resnext3d_configs.model_configs['heads'][0]
+        in_plane = heads_configs['in_plane']
+        num_classes = heads_configs['num_classes']
+        act_func = heads_configs['activation_func']
+        mkldnn_head_fcl = MkldnnFullyConvolutionalLinear(in_plane, num_classes, act_func)
+
+        if args.evaluate:
+            model = model.eval()
+            model = mkldnn_utils.to_mkldnn(model)
+            model._heads['pathway0-stage4-block2']['default_head'].head_fcl = mkldnn_head_fcl.eval()
+        else:
+            model._heads['pathway0-stage4-block2']['default_head'].head_fcl = mkldnn_head_fc
+
+    # print(model)
     if args.evaluate:
         validata(datasets, model, loss, args)
         return
@@ -137,12 +153,9 @@ def validata(datasets, model, loss, args):
                              [batch_time, data_time, losses],
                              prefix='Test: ')
 
-    model = model.eval()
     if args.cuda:
+        model = model.eval()
         model = model.cuda()
-    elif args.mkldnn:
-        model = mkldnn_utils.to_mkldnn(model)
-        # TODO using mkldnn weight cache
 
     with torch.no_grad():
         end = _time(args.cuda)
@@ -160,9 +173,6 @@ def validata(datasets, model, loss, args):
                 inputs["audio"] = inputs["audio"].to_mkldnn()
 
             output = model(inputs)
-
-            if args.mkldnn:
-                output = output.to_dense()
 
             loss_data = loss(output, target)
             # TODO get accuracy

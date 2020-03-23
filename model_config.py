@@ -37,19 +37,19 @@ class ResNeXt3D_Config:
             "heads": [
                 {
                     "name": "fully_convolutional_linear",
-                     "unique_id": "default_head",
-                     "pool_size": [4, 7, 7],
-                     "activation_func": "softmax",
-                     "num_classes": 101,
-                     "fork_block": "pathway0-stage4-block2",
-                     "in_plane": 512
+                    "unique_id": "default_head",
+                    "pool_size": [4, 7, 7],
+                    "activation_func": "softmax",
+                    "num_classes": 101,
+                    "fork_block": "pathway0-stage4-block2",
+                    "in_plane": 512
                 }
             ]
         }
 
         self.dataset_configs = {
             "train":{
-            "name": "ucf101",
+                "name": "ucf101",
                 "split": "train",
                 "batchsize_per_replica": 16,
                 "use_shuffle": True,
@@ -63,15 +63,15 @@ class ResNeXt3D_Config:
                 "fold": 1,
                 "transforms": {
                     "video": [
-                {
+                        {
                             "name": "video_default_augment",
-                             "crop_size": 112,
-                             "size_range": [128, 160]
+                            "crop_size": 112,
+                            "size_range": [128, 160]
                         }
-            ]
+                    ]
                 }
             },
-        "test": {
+            "test": {
                 "name": "ucf101",
                 "split": "test",
                 "batchsize_per_replica": 10,
@@ -134,4 +134,3 @@ class ResNeXt3D_Config:
              "momentum": 0.9,
              "nesterov": True
          }
-
