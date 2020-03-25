@@ -43,7 +43,7 @@ optional arguments:
   --mkldnn              use mkldnn backend
 ```
 ## Note
-For 3d ops of MKLDNN backend, PyTorch master not support it now, only available our internal branch. Thanks!
+For 3d ops of MKLDNN backend, PyTorch master not support them now, only available our internal branch. Thanks!
 
 ## Performance data logs(test on skx-8180, 2 sockets, 56 threads)
 1. Running on native cpu path:
