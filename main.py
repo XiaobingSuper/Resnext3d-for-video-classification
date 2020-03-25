@@ -46,7 +46,7 @@ def main():
     print(args)
     args.cuda = not args.no_cuda and torch.cuda.is_available()
 
-    if args.cuda and argd.mkldnn:
+    if args.cuda and args.mkldnn:
         assert False, "We can not runing this work on GPU backend and MKLDNN backend \
                 please set one backend.\n"
 
