@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export DNNL_PRIMITIVE_CACHE_CAPACITY=1024
+
 ARGS=""
 if [[ "$1" == "--mkldnn" ]]; then
     ARGS="$ARGS --mkldnn"
