@@ -8,8 +8,12 @@ from classy_vision.tasks import ClassificationTask
 from classy_vision.optim import build_optimizer
 from classy_vision.losses import build_loss
 from classy_vision.trainer import LocalTrainer
-from classy_vision.hooks import CheckpointHook
-from classy_vision.hooks import LossLrMeterLoggingHook
+from classy_vision.hooks import (
+    CheckpointHook,
+    ProgressBarHook,
+    LossLrMeterLoggingHook,
+    TimeMetricsHook,
+)
 
 import torch
 from torch.utils import mkldnn as mkldnn_utils
@@ -117,6 +121,10 @@ def train(datasets, model, loss, optimizer, meters, args):
         task.set_dataset(datasets[phase], phase)
 
     hooks = [LossLrMeterLoggingHook(log_freq=args.print_freq)]
+    # show progress
+    hooks.append(ProgressBarHook())
+    # show time bar
+    # hooks.append(TimeMetricsHook(log_freq=args.print_freq))
 
     checkpoint_dir = f"{args.video_dir}/checkpoint/classy_checkpoint_{time.time()}"
     os.mkdir(checkpoint_dir)
