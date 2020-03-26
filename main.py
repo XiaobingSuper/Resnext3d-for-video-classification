@@ -116,9 +116,9 @@ def train(datasets, model, loss, optimizer, meters, args):
     for phase in ["train", "test"]:
         task.set_dataset(datasets[phase], phase)
 
-    hooks = [LossLrMeterLoggingHook(log_freq=4)]
+    hooks = [LossLrMeterLoggingHook(log_freq=args.print_freq)]
 
-    checkpoint_dir = f"/home/xiaobinz/Downloads/resnext3d/ucf/checkpoint/classy_checkpoint_{time.time()}"
+    checkpoint_dir = f"{args.video_dir}/checkpoint/classy_checkpoint_{time.time()}"
     os.mkdir(checkpoint_dir)
     hooks.append(CheckpointHook(checkpoint_dir, input_args={}))
 
