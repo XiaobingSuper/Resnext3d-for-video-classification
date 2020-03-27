@@ -38,10 +38,14 @@ parser.add_argument('-be', '--batch-size-eval', default=10, type=int,
                     help="bathch size of for eval setp")
 parser.add_argument('-p', '--print-freq', default=10, type=int,
                     metavar='N', help='print frequency (default: 10)')
+parser.add_argument('-j', '--num-workers', default=0, type=int, metavar='N',
+                    help='number of data loading workers (default: 0)')
 parser.add_argument('-e', '--evaluate', dest='evaluate', action='store_true',
                     help='evaluate model on validation set')
 parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='disable CUDA')
+parser.add_argument('--skip-tensorboard', action='store_true', default=False,
+                    help='disable tensorboard')
 parser.add_argument('--mkldnn', action='store_true', default=False,
                     help='use mkldnn backend')
 
@@ -104,11 +108,10 @@ def main():
 
     # print(model)
     if args.evaluate:
-        validata(datasets, model, loss, args)
+        validata(datasets, model, loss, meters, args)
         return
 
     train(datasets, model, loss, optimizer, meters, args)
-
 
 def train(datasets, model, loss, optimizer, meters, args):
     task = (ClassificationTask()
@@ -123,18 +126,23 @@ def train(datasets, model, loss, optimizer, meters, args):
     hooks = [LossLrMeterLoggingHook(log_freq=args.print_freq)]
     # show progress
     hooks.append(ProgressBarHook())
-    # show time bar
-    # hooks.append(TimeMetricsHook(log_freq=args.print_freq))
+    if not args.skip_tensorboard:
+        try:
+            from tensorboardX import SummaryWriter
+            tb_writer = SummaryWriter(log_dir=args.video_dir + "/tensorboard")
+            hooks.append(TensorboardPlotHook(tb_writer))
+        except ImportError:
+            print("tensorboardX not installed, skipping tensorboard hooks")
 
     checkpoint_dir = f"{args.video_dir}/checkpoint/classy_checkpoint_{time.time()}"
     os.mkdir(checkpoint_dir)
     hooks.append(CheckpointHook(checkpoint_dir, input_args={}))
 
     task = task.set_hooks(hooks)
-    trainer = LocalTrainer(use_gpu = args.cuda)
+    trainer = LocalTrainer(use_gpu=args.cuda, num_dataloader_workers=args.num_workers)
     trainer.train(task)
 
-def validata(datasets, model, loss, args):
+def validata(datasets, model, loss, meters, args):
     '''
     # This can run eval, but can not get runing time for given iteration
     # so we maually runing the forward step
@@ -146,9 +154,9 @@ def validata(datasets, model, loss, args):
     task.eval_step(use_gpu = args.cuda, local_variables = local_variables)
     '''
     print("Running evaluation step.\n")
-    iterator = datasets["test"].iterator(shuffle_seed = 0,
-                                         epoch= 0,
-                                         num_workers=0,  # 0 indicates to do dataloading on the master process
+    iterator = datasets["test"].iterator(shuffle_seed=0,
+                                         epoch=0,
+                                         num_workers=args.num_workers,
                                          pin_memory=False,
                                          multiprocessing_context=None)
 
@@ -184,10 +192,9 @@ def validata(datasets, model, loss, args):
 
             loss_data = loss(output, target)
             # TODO get accuracy
-            #print(meters)
-            #meters.update(output, target)
-            #dic = meters.get_classy_state()
-            #print(dic)
+            # for meter in meters:
+            #    meter.update(output, target, is_train=False)
+
             batch_time.update(_time(args.cuda) - end)
             end = _time(args.cuda)
 
