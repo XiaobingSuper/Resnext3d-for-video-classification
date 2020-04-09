@@ -1,9 +1,13 @@
 #!/bin/sh
 
-### cpu runs:
+
+###############################################
+### cpu runs on two sockets:
 ### ./run_inference_cpu.sh (throughput)
 ### ./run_inference_cpu.sh --single (realtime)
 ###  also add --mkldnn to run MKLDNN backend
+###
+##############################################
 
 export DNNL_PRIMITIVE_CACHE_CAPACITY=1024
 

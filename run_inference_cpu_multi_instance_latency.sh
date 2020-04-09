@@ -1,5 +1,13 @@
 #!/bin/sh
 
+#######################################################
+### How to run?
+### Test cpu lantancy. Just run
+###
+### ./run_inference_cpu_multi_instance_latency.sh --mkldnn
+###
+#######################################################
+
 export DNNL_PRIMITIVE_CACHE_CAPACITY=1024
 
 ARGS=""
