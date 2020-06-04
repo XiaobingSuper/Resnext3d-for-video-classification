@@ -12,7 +12,6 @@ from classy_vision.hooks import (
     CheckpointHook,
     ProgressBarHook,
     LossLrMeterLoggingHook,
-    TimeMetricsHook,
 )
 
 import torch
