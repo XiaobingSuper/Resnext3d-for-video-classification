@@ -168,8 +168,9 @@ def validata(datasets, model, loss, meters, args):
                              [batch_time, data_time, losses],
                              prefix='Test: ')
 
+
+    model = model.eval()
     if args.cuda:
-        model = model.eval()
         model = model.cuda()
 
     with torch.no_grad():
