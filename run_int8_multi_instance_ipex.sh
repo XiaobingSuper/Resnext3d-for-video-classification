@@ -78,7 +78,7 @@ echo "### running on instance 0, numa node $numa_node_0, core list {$start_core_
 numactl --physcpubind=$start_core_0-$end_core_0 --membind=$numa_node_0 python -u main.py -e $ARGS \
     --ipex --dummy -j 0 -be $BATCH_SIZE $CONFIG_FILE 2>&1 | tee $LOG_0
 
-sleep 10
+sleep 20
 echo -e "\n\n Sum sentences/s together:"
 for i in $(seq 0 $LAST_INSTANCE); do
     log=inference_cpu_bs${BATCH_SIZE}_ins${i}.txt
