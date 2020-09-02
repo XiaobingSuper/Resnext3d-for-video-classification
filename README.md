@@ -3,11 +3,12 @@ Using [ClassyVision](https://github.com/facebookresearch/ClassyVision) to implem
 
 ## Requirements(suggest install the following package using source code)
 
-- Install [PyTorch](https://github.com/pytorch/pytorch) as steps in [README.md](https://github.com/pytorch/pytorch/blob/master/README.md#installation):
+- Install [PyTorch-extension](https://gitlab.devtools.intel.com/intel-pytorch-extension/ipex-cpu-dev) as steps in [README.md](https://gitlab.devtools.intel.com/intel-pytorch-extension/ipex-cpu-dev#installation):
 
 - Install [TorchVison](https://github.com/pytorch/vision):
 ```
 git clone https://github.com/pytorch/vision.git
+git checkout v0.5.1
 python setup.py install
 ```
 - Install [ClassyVision](https://github.com/facebookresearch/ClassyVision):
@@ -17,12 +18,22 @@ cd ClassyVision
 pip install .
 ```
 - Install [PyAV](https://github.com/mikeboers/PyAV): `conda install av -c conda-forge`
+- Build jemalloc
+```
+    cd ..
+    git clone  https://github.com/jemalloc/jemalloc.git    
+    cd jemalloc 
+    ./autogen.sh
+    ./configure --prefix=your_path(eg: /home/tdoux/tdoux/jemalloc/)
+    make
+    make install
+```
 - Download the Video dataset: [UCF101](https://www.crcv.ucf.edu/data/UCF101.php): see [How to do video classification](https://classyvision.ai/tutorials/video_classification)
   
 ## Usage
 ```
-usage: main.py [-h] [--num_epochs N] [-bt N] [-be N] [-p N] [-e] [--no-cuda]
-               [--mkldnn]
+usage: main.py [-h] [--num_epochs N] [-bt N] [-be N] [-p N] [-j N] [-e] [--no-cuda] [--skip-tensorboard] [--ipex] [--dnnl]
+               [--int8] [--jit] [--calibration] [--configure-dir PATH] [--dummy] [-w N]
                DIR
 
 PyTorch Video UCF101 Training
@@ -38,41 +49,43 @@ optional arguments:
   -be N, --batch-size-eval N
                         bathch size of for eval setp
   -p N, --print-freq N  print frequency (default: 10)
+  -j N, --num-workers N
+                        number of data loading workers (default: 0)
   -e, --evaluate        evaluate model on validation set
   --no-cuda             disable CUDA
-  --mkldnn              use mkldnn backend
+  --skip-tensorboard    disable tensorboard
+  --ipex                use intel pytorch extension
+  --dnnl                enable Intel_PyTorch_Extension auto dnnl path
+  --int8                enable ipex int8 path
+  --jit                 enable ipex jit fusionpath
+  --calibration         doing calibration step
+  --configure-dir PATH  path to int8 configures, default file name is configure.json
+  --dummy               using dummu data to test the performance of inference
+  -w N, --warmup-iterations N
+                        number of warmup iterati ons to run
 ```
-## Note
-For 3d ops of MKLDNN backend, PyTorch master not support them now, only available our internal branch. Thanks!
 
-## Performance data logs(test on skx-8180, 2 sockets, 56 threads)
-1. Running on native cpu path:
+## Testing IPEX Performance
+#### Pre load Jemalloc for better performance.
 ```
-### using OMP_NUM_THREADS=56
-### using KMP_AFFINITY=granularity=fine,compact,1,0
-Namespace(batch_size_eval=10, batch_size_train=16, evaluate=True, mkldnn=False, no_cuda=True, num_epochs=300, print_fr          eq=10, video_dir='UCF101')
-Using native CPU backend to do this work.
-
-Running evaluation step.
-
-Test: [   0/3781]       Time 109.408 (109.408)  Data  0.677 ( 0.677)    Loss 0.0000e+00 (0.0000e+00)
-Test: [  10/3781]       Time 95.489 (96.458)    Data  0.674 ( 0.622)    Loss 0.0000e+00 (0.0000e+00)
-Test: [  20/3781]       Time 94.773 (95.659)    Data  0.547 ( 0.608)    Loss 0.0000e+00 (0.0000e+00)
-Test: [  30/3781]       Time 95.197 (95.485)    Data  0.634 ( 0.614)    Loss 0.0000e+00 (0.0000e+00)
+export LD_PRELOAD= "path/lib/libjemalloc.so"
+export MALLOC_CONF="oversize_threshold:1,background_thread:true,metadata_thp:auto,dirty_decay_ms:9000000000,muzzy_decay_ms:9000000000"
 ```
-2. Running on MKLDNN backend path:
+### FP32 path:
+- inference throughput( 1 socket /ins):
 ```
-### cache input/output in mkldnn format
-### using OMP_NUM_THREADS=56
-### using KMP_AFFINITY=granularity=fine,compact,1,0
-Namespace(batch_size_eval=10, batch_size_train=16, evaluate=True, mkldnn=True, no_cuda=True, num_epochs=300, print_freq=10, video_dir='UCF101')
-Using MKLDNN backend to do this work.
-
-Running evaluation step.
-
-Test: [   0/3781]       Time  7.979 ( 7.979)    Data  0.689 ( 0.689)    Loss 0.0000e+00 (0.0000e+00)
-Test: [  10/3781]       Time  7.831 ( 7.896)    Data  0.697 ( 0.650)    Loss 0.0000e+00 (0.0000e+00)
-Test: [  20/3781]       Time  7.103 ( 7.636)    Data  0.616 ( 0.651)    Loss 0.0000e+00 (0.0000e+00)
-Test: [  30/3781]       Time  7.152 ( 7.483)    Data  0.643 ( 0.661)    Loss 0.0000e+00 (0.0000e+00)
+bash run_int8_multi_instance_ipex.sh /lustre/dataset/UCF101 dnnl fp32 jit
 ```
-We can get `~13x` performance improvement
+- inference realtime( 4 cores /ins):
+```
+bash run_int8_multi_instance_latency_ipex.sh /lustre/dataset/UCF101 dnnl fp32 jit
+```
+### INT8 path:
+- inference throughput( 1 socket /ins):
+```
+bash run_int8_multi_instance_ipex.sh /lustre/dataset/UCF101 dnnl int8 jit resnext3d_configure_jit.json
+```
+- inference realtime( 4 cores /ins):
+```
+bash run_int8_multi_instance_latency_ipex.sh /lustre/dataset/UCF101 dnnl int8 jit resnext3d_configure_jit.json
+```
