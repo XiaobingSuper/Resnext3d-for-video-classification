@@ -24,6 +24,8 @@ import shutil
 import time
 import os
 
+import intel_pytorch_extension as ipex
+
 parser = argparse.ArgumentParser(description='PyTorch Video UCF101 Training')
 parser.add_argument('video_dir', metavar='DIR',
                     help='path to video files')
@@ -45,31 +47,50 @@ parser.add_argument('--no-cuda', action='store_true', default=False,
                     help='disable CUDA')
 parser.add_argument('--skip-tensorboard', action='store_true', default=False,
                     help='disable tensorboard')
-parser.add_argument('--mkldnn', action='store_true', default=False,
-                    help='use mkldnn backend')
 
+parser.add_argument('--ipex', action='store_true', default=False,
+                    help='use intel pytorch extension')
+parser.add_argument('--dnnl', action='store_true', default=False,
+                    help='enable Intel_PyTorch_Extension auto dnnl path')
+parser.add_argument('--int8', action='store_true', default=False,
+                    help='enable ipex int8 path')
+parser.add_argument('--jit', action='store_true', default=False,
+                    help='enable ipex jit fusionpath')
+parser.add_argument('--calibration', action='store_true', default=False,
+                    help='doing calibration step')
+parser.add_argument('--configure-dir', default='configure.json', type=str, metavar='PATH',
+                    help = 'path to int8 configures, default file name is configure.json')
+parser.add_argument("--dummy", action='store_true',
+                    help="using  dummu data to test the performance of inference")
+parser.add_argument('-w', '--warmup-iterations', default=5, type=int, metavar='N',
+                    help='number of warmup iterati ons to run')
 def main():
     args = parser.parse_args()
     print(args)
     args.cuda = not args.no_cuda and torch.cuda.is_available()
 
-    if args.cuda and args.mkldnn:
-        assert False, "We can not runing this work on GPU backend and MKLDNN backend \
+    if args.cuda and args.ipex and args.dnnl:
+        assert False, "We can not runing this work on GPU backend and dnnl backend \
                 please set one backend.\n"
 
     if args.cuda:
         print("Using GPU backend to do this work.\n")
-    elif args.mkldnn:
-        print("Using MKLDNN backend to do this work.\n")
+    if args.ipex:
+        print("Runing on ipex.\n")
+        if args.dnnl:
+            ipex.core.enable_auto_dnnl()
+        else:
+            ipex.core.disable_auto_dnnl()
     else:
-        print("Using native CPU backend to do this work.\n")
-
+        if args.dnnl or args.int8:
+            print("Please first enable ipex before running dnnl backend or int8 path\n")
     # set it to the folder where video files are saved
     video_dir = args.video_dir + "/UCF-101"
     # set it to the folder where dataset splitting files are saved
     splits_dir = args.video_dir + "/ucfTrainTestlist"
     # set it to the file path for saving the metadata
-    metadata_file = args.video_dir + "/metadata.pth"
+    #metadata_file = args.video_dir + "/metadata.pth"
+    metadata_file = "metadata.pth"
 
     resnext3d_configs =model_config.ResNeXt3D_Config(video_dir, splits_dir, metadata_file, args.num_epochs)
     resnext3d_configs.setUp()
@@ -90,23 +111,16 @@ def main():
     loss = build_loss({"name": "CrossEntropyLoss"})
     optimizer = build_optimizer(resnext3d_configs.optimizer_configs)
 
-    # there some ops are not supported by MKLDNN, so convert input to CPU tensor
-    if args.mkldnn:
-        heads_configs = resnext3d_configs.model_configs['heads'][0]
-        in_plane = heads_configs['in_plane']
-        num_classes = heads_configs['num_classes']
-        act_func = heads_configs['activation_func']
-        mkldnn_head_fcl = MkldnnFullyConvolutionalLinear(in_plane, num_classes, act_func)
-
-        if args.evaluate:
-            model = model.eval()
-            model = mkldnn_utils.to_mkldnn(model)
-            model._heads['pathway0-stage4-block2']['default_head'].head_fcl = mkldnn_head_fcl.eval()
-        else:
-            model._heads['pathway0-stage4-block2']['default_head'].head_fcl = mkldnn_head_fc
-
     # print(model)
     if args.evaluate:
+        if args.ipex:
+            print("using ipex model to do inference\n")
+            model = model.to(device = 'dpcpp:0')
+            if args.int8:
+                 if args.calibration:
+                      ipex.enable_auto_mix_precision(torch.uint8)
+                 else:
+                     ipex.enable_auto_mix_precision(torch.uint8, configure_file=args.configure_dir)
         validata(datasets, model, loss, meters, args)
         return
 
@@ -168,41 +182,124 @@ def validata(datasets, model, loss, meters, args):
                              [batch_time, data_time, losses],
                              prefix='Test: ')
 
-
     model = model.eval()
     if args.cuda:
         model = model.cuda()
+    if args.ipex and args.int8 and args.calibration:
+        with torch.no_grad():
+            with ipex.int8_calibration(args.configure_dir):
+                end = _time(args.cuda)
+                for i, sample in enumerate(iterator):
+                    data_time.update(_time(args.cuda) - end)
+                    inputs = sample["input"]
+                    target = sample["target"]
+                    inputs["video"] = inputs["video"].to(device = 'dpcpp:0')
+                    inputs["audio"] = inputs["audio"].to(device = 'dpcpp:0')
+                    target = target.to(device = 'dpcpp:0')
+                    if args.jit:
+                        if i == 0:
+                            trace_model = torch.jit.trace(model, inputs)
+                        output = trace_model(inputs)
+                    else:
+                        output = model(inputs)
 
-    with torch.no_grad():
-        end = _time(args.cuda)
-        for i, sample in enumerate(iterator):
-            data_time.update(_time(args.cuda) - end)
+                    loss_data = loss(output, target)
+                    batch_time.update(_time(args.cuda) - end)
+                    end = _time(args.cuda)
 
-            inputs = sample["input"]
-            target = sample["target"]
+                    if i % args.print_freq == 0:
+                        progress.display(i)
+
+                    if i == 10:
+                        break
+                    ipex.calibration_reset()
+    else:
+        if args.ipex:
+            if args.int8:
+                print("running int8 evalation step\n")
+            else:
+                print("running fp32 evalation step\n")
+        if args.dummy:
+            print("Using dummpy input to test the performance\n")
+            inputs = {}
+            inputs["video"] = torch.randn(args.batch_size_eval, 3, 32, 128, 170)
+            inputs["audio"] = torch.randn(args.batch_size_eval, 0, 1)
+            target = torch.arange(1, args.batch_size_eval + 1).long()
+            if args.ipex:
+                inputs["video"] = inputs["video"].to(device = 'dpcpp:0')
+                inputs["audio"] = inputs["audio"].to(device = 'dpcpp:0')
+                target = target.to(device = 'dpcpp:0')
             if args.cuda:
                 inputs["video"] = inputs["video"].cuda()
                 inputs["audio"] = inputs["audio"].cuda()
                 target = target.cuda()
-            elif args.mkldnn:
-                inputs["video"] = inputs["video"].to_mkldnn()
-                inputs["audio"] = inputs["audio"].to_mkldnn()
 
-            output = model(inputs)
+            number_iter = len(iterator)
+            with torch.no_grad():
+                for i in range(number_iter):
+                    #data_time.update(_time(args.cuda) - end)
+                    if i >= args.warmup_iterations:
+                        end = time.time()
+                    if args.jit:
+                        if i == 0:
+                            trace_model = torch.jit.trace(model, inputs)
+                        output = trace_model(inputs)
+                    else:
+                        output = model(inputs)
 
-            loss_data = loss(output, target)
-            # TODO get accuracy
-            # for meter in meters:
-            #    meter.update(output, target, is_train=False)
+                    #loss_data = loss(output, target)
+                    # TODO get accuracy
+                    # for meter in meters:
+                    #    meter.update(output, target, is_train=False)
 
-            batch_time.update(_time(args.cuda) - end)
-            end = _time(args.cuda)
+                    if i >= args.warmup_iterations:
+                        batch_time.update(_time(args.cuda) - end)
 
-            if i % args.print_freq == 0:
-                progress.display(i)
-        # TODO
-        # print(' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'
-        #      .format(top1=top1, top5=top5))
+                    if i % args.print_freq == 0:
+                        progress.display(i)
+                    if i == 100:
+                        break
+                batch_size = args.batch_size_eval
+                latency = batch_time.avg / batch_size * 1000
+                perf = batch_size / batch_time.avg
+                print('inference latency %.2f ms'%latency)
+                print('inference performance %.2f fps'%perf)
+        else:
+            with torch.no_grad():
+                end = _time(args.cuda)
+                for i, sample in enumerate(iterator):
+                    data_time.update(_time(args.cuda) - end)
+                    inputs = sample["input"]
+                    target = sample["target"]
+                    if args.cuda:
+                        inputs["video"] = inputs["video"].cuda()
+                        inputs["audio"] = inputs["audio"].cuda()
+                        target = target.cuda()
+                    elif args.ipex:
+                        inputs["video"] = inputs["video"].to(device = 'dpcpp:0')
+                        inputs["audio"] = inputs["audio"].to(device = 'dpcpp:0')
+                    if args.jit:
+                        if i == 0:
+                            trace_model = torch.jit.trace(model, inputs)
+                        output = trace_model(inputs)
+                    else:
+                        output = model(inputs)
+
+                    loss_data = loss(output, target)
+                    # TODO get accuracy
+                    # for meter in meters:
+                    #    meter.update(output, target, is_train=False)
+
+                    batch_time.update(_time(args.cuda) - end)
+                    end = _time(args.cuda)
+
+                    if i % args.print_freq == 0:
+                        progress.display(i)
+                    if i == 30:
+                        break
+                # TODO
+                # print(' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'
+                #      .format(top1=top1, top5=top5))
 
 def _time(use_cuda):
     if use_cuda:
