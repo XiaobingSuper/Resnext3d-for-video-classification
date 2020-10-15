@@ -8,7 +8,7 @@
             48.29545211791992
         ],
         "outputs_scale": [
-            44.00952911376953
+            54.96194076538086
         ],
         "inputs_uint8_used": [
             false
@@ -24,10 +24,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            44.00952911376953
+            54.96194076538086
         ],
         "outputs_scale": [
-            74.7554931640625
+            113.35782623291016
         ],
         "inputs_uint8_used": [
             false
@@ -43,10 +43,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            74.7554931640625
+            113.35782623291016
         ],
         "outputs_scale": [
-            410.6747741699219
+            470.39581298828125
         ],
         "inputs_uint8_used": [
             false
@@ -62,10 +62,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            410.6747741699219
+            470.39581298828125
         ],
         "outputs_scale": [
-            45.457271575927734
+            51.99016571044922
         ],
         "inputs_uint8_used": [
             false
@@ -81,10 +81,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            45.457271575927734
+            51.99016571044922
         ],
         "outputs_scale": [
-            72.38581085205078
+            94.32524108886719
         ],
         "inputs_uint8_used": [
             false
@@ -100,10 +100,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            72.38581085205078
+            94.32524108886719
         ],
         "outputs_scale": [
-            319.98858642578125
+            449.70086669921875
         ],
         "inputs_uint8_used": [
             false
@@ -119,10 +119,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            319.98858642578125
+            449.70086669921875
         ],
         "outputs_scale": [
-            44.60890579223633
+            52.7818603515625
         ],
         "inputs_uint8_used": [
             false
@@ -138,10 +138,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            44.60890579223633
+            52.7818603515625
         ],
         "outputs_scale": [
-            83.06549072265625
+            97.07559204101562
         ],
         "inputs_uint8_used": [
             false
@@ -157,10 +157,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            83.06549072265625
+            97.07559204101562
         ],
         "outputs_scale": [
-            392.143798828125
+            382.6602783203125
         ],
         "inputs_uint8_used": [
             false
@@ -176,10 +176,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            392.143798828125
+            382.6602783203125
         ],
         "outputs_scale": [
-            44.64826965332031
+            51.606964111328125
         ],
         "inputs_uint8_used": [
             false
@@ -195,10 +195,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            44.64826965332031
+            51.606964111328125
         ],
         "outputs_scale": [
-            96.77023315429688
+            126.29003143310547
         ],
         "inputs_uint8_used": [
             false
@@ -214,10 +214,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            96.77023315429688
+            126.29003143310547
         ],
         "outputs_scale": [
-            460.8206787109375
+            605.7612915039062
         ],
         "inputs_uint8_used": [
             false
@@ -233,10 +233,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            460.8206787109375
+            605.7612915039062
         ],
         "outputs_scale": [
-            274.9480895996094
+            376.56390380859375
         ],
         "inputs_uint8_used": [
             false
@@ -252,10 +252,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            44.64826965332031
+            51.606964111328125
         ],
         "outputs_scale": [
-            54.552162170410156
+            69.58894348144531
         ],
         "inputs_uint8_used": [
             false
@@ -271,10 +271,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            54.552162170410156
+            69.58894348144531
         ],
         "outputs_scale": [
-            106.42768096923828
+            118.43765258789062
         ],
         "inputs_uint8_used": [
             false
@@ -290,10 +290,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            106.42768096923828
+            118.43765258789062
         ],
         "outputs_scale": [
-            515.9542236328125
+            583.6558227539062
         ],
         "inputs_uint8_used": [
             false
@@ -309,10 +309,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            515.9542236328125
+            583.6558227539062
         ],
         "outputs_scale": [
-            57.70002365112305
+            66.36243438720703
         ],
         "inputs_uint8_used": [
             false
@@ -328,10 +328,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            57.70002365112305
+            66.36243438720703
         ],
         "outputs_scale": [
-            103.68450164794922
+            99.36798858642578
         ],
         "inputs_uint8_used": [
             false
@@ -347,10 +347,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            103.68450164794922
+            99.36798858642578
         ],
         "outputs_scale": [
-            577.0234375
+            577.1800537109375
         ],
         "inputs_uint8_used": [
             false
@@ -366,10 +366,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            577.0234375
+            577.1800537109375
         ],
         "outputs_scale": [
-            56.74453353881836
+            69.83196258544922
         ],
         "inputs_uint8_used": [
             false
@@ -385,10 +385,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            56.74453353881836
+            69.83196258544922
         ],
         "outputs_scale": [
-            96.30014038085938
+            104.36126708984375
         ],
         "inputs_uint8_used": [
             false
@@ -404,10 +404,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            96.30014038085938
+            104.36126708984375
         ],
         "outputs_scale": [
-            378.03448486328125
+            574.8629760742188
         ],
         "inputs_uint8_used": [
             false
@@ -423,10 +423,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            378.03448486328125
+            574.8629760742188
         ],
         "outputs_scale": [
-            53.96311950683594
+            67.91490936279297
         ],
         "inputs_uint8_used": [
             false
@@ -442,10 +442,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            53.96311950683594
+            67.91490936279297
         ],
         "outputs_scale": [
-            106.08206939697266
+            124.96806335449219
         ],
         "inputs_uint8_used": [
             false
@@ -461,10 +461,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            106.08206939697266
+            124.96806335449219
         ],
         "outputs_scale": [
-            826.1131591796875
+            617.46923828125
         ],
         "inputs_uint8_used": [
             false
@@ -480,10 +480,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            826.1131591796875
+            617.46923828125
         ],
         "outputs_scale": [
-            409.376708984375
+            457.06671142578125
         ],
         "inputs_uint8_used": [
             false
@@ -499,10 +499,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            53.96311950683594
+            67.91490936279297
         ],
         "outputs_scale": [
-            74.203125
+            94.16351318359375
         ],
         "inputs_uint8_used": [
             false
@@ -518,10 +518,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            74.203125
+            94.16351318359375
         ],
         "outputs_scale": [
-            145.00730895996094
+            155.07579040527344
         ],
         "inputs_uint8_used": [
             false
@@ -537,10 +537,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            145.00730895996094
+            155.07579040527344
         ],
         "outputs_scale": [
-            584.5415649414062
+            894.308349609375
         ],
         "inputs_uint8_used": [
             false
@@ -556,10 +556,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            584.5415649414062
+            894.308349609375
         ],
         "outputs_scale": [
-            67.79903411865234
+            93.55427551269531
         ],
         "inputs_uint8_used": [
             false
@@ -575,10 +575,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            67.79903411865234
+            93.55427551269531
         ],
         "outputs_scale": [
-            119.57400512695312
+            122.84980773925781
         ],
         "inputs_uint8_used": [
             false
@@ -594,10 +594,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            119.57400512695312
+            122.84980773925781
         ],
         "outputs_scale": [
-            714.298583984375
+            772.179443359375
         ],
         "inputs_uint8_used": [
             false
@@ -613,10 +613,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            714.298583984375
+            772.179443359375
         ],
         "outputs_scale": [
-            70.11506652832031
+            95.33162689208984
         ],
         "inputs_uint8_used": [
             false
@@ -632,10 +632,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            70.11506652832031
+            95.33162689208984
         ],
         "outputs_scale": [
-            133.86380004882812
+            136.76373291015625
         ],
         "inputs_uint8_used": [
             false
@@ -651,10 +651,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            133.86380004882812
+            136.76373291015625
         ],
         "outputs_scale": [
-            636.5917358398438
+            770.1710815429688
         ],
         "inputs_uint8_used": [
             false
@@ -670,10 +670,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            636.5917358398438
+            770.1710815429688
         ],
         "outputs_scale": [
-            64.33435821533203
+            95.9735336303711
         ],
         "inputs_uint8_used": [
             false
@@ -689,10 +689,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            64.33435821533203
+            95.9735336303711
         ],
         "outputs_scale": [
-            98.51033020019531
+            139.24301147460938
         ],
         "inputs_uint8_used": [
             false
@@ -708,10 +708,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            98.51033020019531
+            139.24301147460938
         ],
         "outputs_scale": [
-            616.6941528320312
+            898.5323486328125
         ],
         "inputs_uint8_used": [
             false
@@ -727,10 +727,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            616.6941528320312
+            898.5323486328125
         ],
         "outputs_scale": [
-            66.19816589355469
+            87.87342071533203
         ],
         "inputs_uint8_used": [
             false
@@ -746,10 +746,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            66.19816589355469
+            87.87342071533203
         ],
         "outputs_scale": [
-            120.08551788330078
+            139.51181030273438
         ],
         "inputs_uint8_used": [
             false
@@ -765,10 +765,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            120.08551788330078
+            139.51181030273438
         ],
         "outputs_scale": [
-            651.0244140625
+            701.4173583984375
         ],
         "inputs_uint8_used": [
             false
@@ -784,10 +784,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            651.0244140625
+            701.4173583984375
         ],
         "outputs_scale": [
-            64.95995330810547
+            84.45506286621094
         ],
         "inputs_uint8_used": [
             false
@@ -803,10 +803,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            64.95995330810547
+            84.45506286621094
         ],
         "outputs_scale": [
-            110.06729888916016
+            145.0525360107422
         ],
         "inputs_uint8_used": [
             false
@@ -822,10 +822,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            110.06729888916016
+            145.0525360107422
         ],
         "outputs_scale": [
-            533.0496215820312
+            782.5811767578125
         ],
         "inputs_uint8_used": [
             false
@@ -841,10 +841,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            533.0496215820312
+            782.5811767578125
         ],
         "outputs_scale": [
-            64.91939544677734
+            79.51599884033203
         ],
         "inputs_uint8_used": [
             false
@@ -860,10 +860,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            64.91939544677734
+            79.51599884033203
         ],
         "outputs_scale": [
-            102.12568664550781
+            121.48332977294922
         ],
         "inputs_uint8_used": [
             false
@@ -879,10 +879,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            102.12568664550781
+            121.48332977294922
         ],
         "outputs_scale": [
-            602.4741821289062
+            789.3667602539062
         ],
         "inputs_uint8_used": [
             false
@@ -898,10 +898,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            602.4741821289062
+            789.3667602539062
         ],
         "outputs_scale": [
-            62.79771041870117
+            78.88621520996094
         ],
         "inputs_uint8_used": [
             false
@@ -917,10 +917,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            62.79771041870117
+            78.88621520996094
         ],
         "outputs_scale": [
-            106.46543884277344
+            140.5756378173828
         ],
         "inputs_uint8_used": [
             false
@@ -936,10 +936,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            106.46543884277344
+            140.5756378173828
         ],
         "outputs_scale": [
-            619.30078125
+            759.8305053710938
         ],
         "inputs_uint8_used": [
             false
@@ -955,10 +955,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            619.30078125
+            759.8305053710938
         ],
         "outputs_scale": [
-            62.56183624267578
+            78.32657623291016
         ],
         "inputs_uint8_used": [
             false
@@ -974,10 +974,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            62.56183624267578
+            78.32657623291016
         ],
         "outputs_scale": [
-            105.20462799072266
+            123.65254211425781
         ],
         "inputs_uint8_used": [
             false
@@ -993,10 +993,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            105.20462799072266
+            123.65254211425781
         ],
         "outputs_scale": [
-            455.7399597167969
+            828.340576171875
         ],
         "inputs_uint8_used": [
             false
@@ -1012,10 +1012,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            455.7399597167969
+            828.340576171875
         ],
         "outputs_scale": [
-            64.91519165039062
+            76.2879409790039
         ],
         "inputs_uint8_used": [
             false
@@ -1031,10 +1031,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            64.91519165039062
+            76.2879409790039
         ],
         "outputs_scale": [
-            98.94519805908203
+            120.21825408935547
         ],
         "inputs_uint8_used": [
             false
@@ -1050,10 +1050,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            98.94519805908203
+            120.21825408935547
         ],
         "outputs_scale": [
-            533.5027465820312
+            732.3096923828125
         ],
         "inputs_uint8_used": [
             false
@@ -1069,10 +1069,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            533.5027465820312
+            732.3096923828125
         ],
         "outputs_scale": [
-            64.81916809082031
+            86.56517791748047
         ],
         "inputs_uint8_used": [
             false
@@ -1088,10 +1088,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            64.81916809082031
+            86.56517791748047
         ],
         "outputs_scale": [
-            98.91407775878906
+            133.66281127929688
         ],
         "inputs_uint8_used": [
             false
@@ -1107,10 +1107,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            98.91407775878906
+            133.66281127929688
         ],
         "outputs_scale": [
-            497.7821960449219
+            760.6099853515625
         ],
         "inputs_uint8_used": [
             false
@@ -1126,10 +1126,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            497.7821960449219
+            760.6099853515625
         ],
         "outputs_scale": [
-            64.25213623046875
+            83.0499267578125
         ],
         "inputs_uint8_used": [
             false
@@ -1145,10 +1145,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            64.25213623046875
+            83.0499267578125
         ],
         "outputs_scale": [
-            110.0347671508789
+            131.5511474609375
         ],
         "inputs_uint8_used": [
             false
@@ -1164,10 +1164,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            110.0347671508789
+            131.5511474609375
         ],
         "outputs_scale": [
-            496.0582275390625
+            739.4070434570312
         ],
         "inputs_uint8_used": [
             false
@@ -1183,10 +1183,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            496.0582275390625
+            739.4070434570312
         ],
         "outputs_scale": [
-            62.785118103027344
+            78.1277084350586
         ],
         "inputs_uint8_used": [
             false
@@ -1202,10 +1202,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            62.785118103027344
+            78.1277084350586
         ],
         "outputs_scale": [
-            102.6879653930664
+            122.54499816894531
         ],
         "inputs_uint8_used": [
             false
@@ -1221,10 +1221,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            102.6879653930664
+            122.54499816894531
         ],
         "outputs_scale": [
-            513.552490234375
+            604.725341796875
         ],
         "inputs_uint8_used": [
             false
@@ -1240,10 +1240,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            513.552490234375
+            604.725341796875
         ],
         "outputs_scale": [
-            55.43784713745117
+            80.62882232666016
         ],
         "inputs_uint8_used": [
             false
@@ -1259,10 +1259,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            55.43784713745117
+            80.62882232666016
         ],
         "outputs_scale": [
-            92.81343841552734
+            132.93296813964844
         ],
         "inputs_uint8_used": [
             false
@@ -1278,10 +1278,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            92.81343841552734
+            132.93296813964844
         ],
         "outputs_scale": [
-            517.6546630859375
+            569.6273803710938
         ],
         "inputs_uint8_used": [
             false
@@ -1297,10 +1297,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            517.6546630859375
+            569.6273803710938
         ],
         "outputs_scale": [
-            51.06620407104492
+            84.34938049316406
         ],
         "inputs_uint8_used": [
             false
@@ -1316,10 +1316,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            51.06620407104492
+            84.34938049316406
         ],
         "outputs_scale": [
-            79.3003921508789
+            128.16648864746094
         ],
         "inputs_uint8_used": [
             false
@@ -1335,10 +1335,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            79.3003921508789
+            128.16648864746094
         ],
         "outputs_scale": [
-            426.1694641113281
+            694.60546875
         ],
         "inputs_uint8_used": [
             false
@@ -1354,10 +1354,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            426.1694641113281
+            694.60546875
         ],
         "outputs_scale": [
-            49.20866394042969
+            84.49195098876953
         ],
         "inputs_uint8_used": [
             false
@@ -1373,10 +1373,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            49.20866394042969
+            84.49195098876953
         ],
         "outputs_scale": [
-            81.7287826538086
+            112.15978240966797
         ],
         "inputs_uint8_used": [
             false
@@ -1392,10 +1392,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            81.7287826538086
+            112.15978240966797
         ],
         "outputs_scale": [
-            523.8389282226562
+            630.4160766601562
         ],
         "inputs_uint8_used": [
             false
@@ -1411,10 +1411,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            523.8389282226562
+            630.4160766601562
         ],
         "outputs_scale": [
-            46.06956481933594
+            87.38191986083984
         ],
         "inputs_uint8_used": [
             false
@@ -1430,10 +1430,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            46.06956481933594
+            87.38191986083984
         ],
         "outputs_scale": [
-            86.97431945800781
+            120.38179779052734
         ],
         "inputs_uint8_used": [
             false
@@ -1449,10 +1449,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            86.97431945800781
+            120.38179779052734
         ],
         "outputs_scale": [
-            391.86370849609375
+            577.8349609375
         ],
         "inputs_uint8_used": [
             false
@@ -1468,10 +1468,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            391.86370849609375
+            577.8349609375
         ],
         "outputs_scale": [
-            45.19417953491211
+            82.12869262695312
         ],
         "inputs_uint8_used": [
             false
@@ -1487,10 +1487,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            45.19417953491211
+            82.12869262695312
         ],
         "outputs_scale": [
-            79.55440521240234
+            118.51765441894531
         ],
         "inputs_uint8_used": [
             false
@@ -1506,10 +1506,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            79.55440521240234
+            118.51765441894531
         ],
         "outputs_scale": [
-            379.4925842285156
+            604.8919067382812
         ],
         "inputs_uint8_used": [
             false
@@ -1525,10 +1525,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            379.4925842285156
+            604.8919067382812
         ],
         "outputs_scale": [
-            42.97355270385742
+            80.36505126953125
         ],
         "inputs_uint8_used": [
             false
@@ -1544,10 +1544,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            42.97355270385742
+            80.36505126953125
         ],
         "outputs_scale": [
-            72.87158966064453
+            88.62661743164062
         ],
         "inputs_uint8_used": [
             false
@@ -1563,10 +1563,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            72.87158966064453
+            88.62661743164062
         ],
         "outputs_scale": [
-            461.8710021972656
+            749.6865234375
         ],
         "inputs_uint8_used": [
             false
@@ -1582,10 +1582,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            461.8710021972656
+            749.6865234375
         ],
         "outputs_scale": [
-            43.95509338378906
+            79.56922912597656
         ],
         "inputs_uint8_used": [
             false
@@ -1601,10 +1601,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            43.95509338378906
+            79.56922912597656
         ],
         "outputs_scale": [
-            79.38349914550781
+            104.41545867919922
         ],
         "inputs_uint8_used": [
             false
@@ -1620,10 +1620,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            79.38349914550781
+            104.41545867919922
         ],
         "outputs_scale": [
-            461.76202392578125
+            679.0745849609375
         ],
         "inputs_uint8_used": [
             false
@@ -1639,10 +1639,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            461.76202392578125
+            679.0745849609375
         ],
         "outputs_scale": [
-            44.08399200439453
+            78.45579528808594
         ],
         "inputs_uint8_used": [
             false
@@ -1658,10 +1658,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            44.08399200439453
+            78.45579528808594
         ],
         "outputs_scale": [
-            77.63809204101562
+            100.41558837890625
         ],
         "inputs_uint8_used": [
             false
@@ -1677,10 +1677,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            77.63809204101562
+            100.41558837890625
         ],
         "outputs_scale": [
-            439.09014892578125
+            614.5319213867188
         ],
         "inputs_uint8_used": [
             false
@@ -1696,10 +1696,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            439.09014892578125
+            614.5319213867188
         ],
         "outputs_scale": [
-            45.418357849121094
+            76.119140625
         ],
         "inputs_uint8_used": [
             false
@@ -1715,10 +1715,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            45.418357849121094
+            76.119140625
         ],
         "outputs_scale": [
-            82.01116943359375
+            105.79061126708984
         ],
         "inputs_uint8_used": [
             false
@@ -1734,10 +1734,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            82.01116943359375
+            105.79061126708984
         ],
         "outputs_scale": [
-            353.2348327636719
+            496.0540771484375
         ],
         "inputs_uint8_used": [
             false
@@ -1753,10 +1753,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            353.2348327636719
+            496.0540771484375
         ],
         "outputs_scale": [
-            46.46095657348633
+            77.2109603881836
         ],
         "inputs_uint8_used": [
             false
@@ -1772,10 +1772,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            46.46095657348633
+            77.2109603881836
         ],
         "outputs_scale": [
-            90.82695007324219
+            138.6265869140625
         ],
         "inputs_uint8_used": [
             false
@@ -1791,10 +1791,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            90.82695007324219
+            138.6265869140625
         ],
         "outputs_scale": [
-            529.9619140625
+            873.4608154296875
         ],
         "inputs_uint8_used": [
             false
@@ -1810,10 +1810,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            529.9619140625
+            873.4608154296875
         ],
         "outputs_scale": [
-            287.8531799316406
+            471.7366638183594
         ],
         "inputs_uint8_used": [
             false
@@ -1829,10 +1829,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            46.46095657348633
+            77.2109603881836
         ],
         "outputs_scale": [
-            61.40296173095703
+            90.48107147216797
         ],
         "inputs_uint8_used": [
             false
@@ -1848,10 +1848,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            61.40296173095703
+            90.48107147216797
         ],
         "outputs_scale": [
-            104.80867004394531
+            157.90850830078125
         ],
         "inputs_uint8_used": [
             false
@@ -1867,10 +1867,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            104.80867004394531
+            157.90850830078125
         ],
         "outputs_scale": [
-            634.5610961914062
+            1022.9256591796875
         ],
         "inputs_uint8_used": [
             false
@@ -1886,10 +1886,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            634.5610961914062
+            1022.9256591796875
         ],
         "outputs_scale": [
-            64.29242706298828
+            92.26686096191406
         ],
         "inputs_uint8_used": [
             false
@@ -1905,10 +1905,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            64.29242706298828
+            92.26686096191406
         ],
         "outputs_scale": [
-            106.68294525146484
+            155.4287567138672
         ],
         "inputs_uint8_used": [
             false
@@ -1924,10 +1924,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            106.68294525146484
+            155.4287567138672
         ],
         "outputs_scale": [
-            639.4646606445312
+            735.7066650390625
         ],
         "inputs_uint8_used": [
             false
@@ -1943,10 +1943,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            639.4646606445312
+            735.7066650390625
         ],
         "outputs_scale": [
-            61.50716018676758
+            88.39164733886719
         ],
         "inputs_uint8_used": [
             false
@@ -1962,10 +1962,10 @@
         "algorithm": "min_max",
         "weight_granularity": "per_tensor",
         "inputs_scale": [
-            113.79367065429688
+            150.2973175048828
         ],
         "outputs_scale": [
-            294.845458984375
+            359.981201171875
         ],
         "inputs_uint8_used": [
             false

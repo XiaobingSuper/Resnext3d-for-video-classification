@@ -116,11 +116,6 @@ def main():
         if args.ipex:
             print("using ipex model to do inference\n")
             model = model.to(device = 'dpcpp:0')
-            if args.int8:
-                 if args.calibration:
-                      ipex.enable_auto_mix_precision(torch.uint8)
-                 else:
-                     ipex.enable_auto_mix_precision(torch.uint8, configure_file=args.configure_dir)
         validata(datasets, model, loss, meters, args)
         return
 
@@ -186,10 +181,11 @@ def validata(datasets, model, loss, meters, args):
     if args.cuda:
         model = model.cuda()
     if args.ipex and args.int8 and args.calibration:
+        conf = ipex.AmpConf(torch.int8)
         with torch.no_grad():
-            with ipex.int8_calibration(args.configure_dir):
-                end = _time(args.cuda)
-                for i, sample in enumerate(iterator):
+            end = _time(args.cuda)
+            for i, sample in enumerate(iterator):
+                with ipex.enable_auto_mix_precision(conf, running_mode="calibration"):
                     data_time.update(_time(args.cuda) - end)
                     inputs = sample["input"]
                     target = sample["target"]
@@ -212,12 +208,14 @@ def validata(datasets, model, loss, meters, args):
 
                     if i == 10:
                         break
-                    ipex.calibration_reset()
+            conf.save(args.configure_dir)
     else:
         if args.ipex:
             if args.int8:
+                conf = ipex.AmpConf(torch.int8, args.configure_dir)
                 print("running int8 evalation step\n")
             else:
+                conf = ipex.AmpConf(None)
                 print("running fp32 evalation step\n")
         if args.dummy:
             print("Using dummpy input to test the performance\n")
@@ -235,71 +233,120 @@ def validata(datasets, model, loss, meters, args):
                 target = target.cuda()
 
             number_iter = len(iterator)
-            with torch.no_grad():
-                for i in range(number_iter):
-                    #data_time.update(_time(args.cuda) - end)
-                    if i >= args.warmup_iterations:
-                        end = time.time()
-                    if args.jit:
-                        if i == 0:
-                            trace_model = torch.jit.trace(model, inputs)
-                        output = trace_model(inputs)
-                    else:
-                        output = model(inputs)
+            if args.ipex:
+                with torch.no_grad():
+                    for i in range(number_iter):
+                        with ipex.enable_auto_mix_precision(conf, running_mode="inference"):
+                            if i >= args.warmup_iterations:
+                                end = time.time()
+                            if args.jit:
+                                if i == 0:
+                                    trace_model = torch.jit.trace(model, inputs)
+                                output = trace_model(inputs)
+                            else:
+                                output = model(inputs)
 
-                    #loss_data = loss(output, target)
-                    # TODO get accuracy
-                    # for meter in meters:
-                    #    meter.update(output, target, is_train=False)
+                            if i >= args.warmup_iterations:
+                                batch_time.update(_time(args.cuda) - end)
 
-                    if i >= args.warmup_iterations:
-                        batch_time.update(_time(args.cuda) - end)
+                            if i % args.print_freq == 0:
+                                progress.display(i)
+                            if i == 100:
+                                break
+            else:
+                with torch.no_grad():
+                    for i in range(number_iter):
+                        if i >= args.warmup_iterations:
+                            end = time.time()
+                        if args.jit:
+                            if i == 0:
+                                trace_model = torch.jit.trace(model, inputs)
+                            output = trace_model(inputs)
+                        else:
+                            output = model(inputs)
 
-                    if i % args.print_freq == 0:
-                        progress.display(i)
-                    if i == 100:
-                        break
-                batch_size = args.batch_size_eval
-                latency = batch_time.avg / batch_size * 1000
-                perf = batch_size / batch_time.avg
-                print('inference latency %.2f ms'%latency)
-                print('inference performance %.2f fps'%perf)
+                        if i >= args.warmup_iterations:
+                            batch_time.update(_time(args.cuda) - end)
+
+                        if i % args.print_freq == 0:
+                            progress.display(i)
+                        if i == 100:
+                            break
         else:
-            with torch.no_grad():
-                end = _time(args.cuda)
-                for i, sample in enumerate(iterator):
-                    data_time.update(_time(args.cuda) - end)
-                    inputs = sample["input"]
-                    target = sample["target"]
-                    if args.cuda:
-                        inputs["video"] = inputs["video"].cuda()
-                        inputs["audio"] = inputs["audio"].cuda()
-                        target = target.cuda()
-                    elif args.ipex:
-                        inputs["video"] = inputs["video"].to(device = 'dpcpp:0')
-                        inputs["audio"] = inputs["audio"].to(device = 'dpcpp:0')
-                    if args.jit:
-                        if i == 0:
-                            trace_model = torch.jit.trace(model, inputs)
-                        output = trace_model(inputs)
-                    else:
-                        output = model(inputs)
-
-                    loss_data = loss(output, target)
-                    # TODO get accuracy
-                    # for meter in meters:
-                    #    meter.update(output, target, is_train=False)
-
-                    batch_time.update(_time(args.cuda) - end)
+            if args.ipex:
+                with torch.no_grad():
                     end = _time(args.cuda)
+                    for i, sample in enumerate(iterator):
+                        with ipex.enable_auto_mix_precision(conf, running_mode="inference"):
+                            data_time.update(_time(args.cuda) - end)
+                            inputs = sample["input"]
+                            target = sample["target"]
 
-                    if i % args.print_freq == 0:
-                        progress.display(i)
-                    if i == 30:
-                        break
-                # TODO
-                # print(' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'
-                #      .format(top1=top1, top5=top5))
+                            inputs["video"] = inputs["video"].to(device = 'dpcpp:0')
+                            inputs["audio"] = inputs["audio"].to(device = 'dpcpp:0')
+                            if args.jit:
+                                if i == 0:
+                                    trace_model = torch.jit.trace(model, inputs)
+                                output = trace_model(inputs)
+                            else:
+                                output = model(inputs)
+
+                            loss_data = loss(output, target)
+                            # TODO get accuracy
+                            # for meter in meters:
+                            #    meter.update(output, target, is_train=False)
+
+                            batch_time.update(_time(args.cuda) - end)
+                            end = _time(args.cuda)
+
+                            if i % args.print_freq == 0:
+                                progress.display(i)
+                            if i == 30:
+                                break
+
+            else:
+                with torch.no_grad():
+                    end = _time(args.cuda)
+                    for i, sample in enumerate(iterator):
+                        data_time.update(_time(args.cuda) - end)
+                        inputs = sample["input"]
+                        target = sample["target"]
+                        if args.cuda:
+                            inputs["video"] = inputs["video"].cuda()
+                            inputs["audio"] = inputs["audio"].cuda()
+                            target = target.cuda()
+                        elif args.ipex:
+                            inputs["video"] = inputs["video"].to(device = 'dpcpp:0')
+                            inputs["audio"] = inputs["audio"].to(device = 'dpcpp:0')
+                        if args.jit:
+                            if i == 0:
+                                trace_model = torch.jit.trace(model, inputs)
+                            output = trace_model(inputs)
+                        else:
+                            output = model(inputs)
+
+                        loss_data = loss(output, target)
+                        # TODO get accuracy
+                        # for meter in meters:
+                        #    meter.update(output, target, is_train=False)
+
+                        batch_time.update(_time(args.cuda) - end)
+                        end = _time(args.cuda)
+
+                        if i % args.print_freq == 0:
+                            progress.display(i)
+                        if i == 30:
+                            break
+
+        batch_size = args.batch_size_eval
+        latency = batch_time.avg / batch_size * 1000
+        perf = batch_size / batch_time.avg
+        print('inference latency %.2f ms'%latency)
+        print('inference performance %.2f fps'%perf)
+
+        # TODO
+        # print(' * Acc@1 {top1.avg:.3f} Acc@5 {top5.avg:.3f}'
+        #      .format(top1=top1, top5=top5))
 
 def _time(use_cuda):
     if use_cuda:
