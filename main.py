@@ -185,7 +185,7 @@ def validata(datasets, model, loss, meters, args):
         with torch.no_grad():
             end = _time(args.cuda)
             for i, sample in enumerate(iterator):
-                with ipex.enable_auto_mix_precision(conf, running_mode="calibration"):
+                with ipex.AutoMixPrecision(conf, running_mode="calibration"):
                     data_time.update(_time(args.cuda) - end)
                     inputs = sample["input"]
                     target = sample["target"]
@@ -236,7 +236,7 @@ def validata(datasets, model, loss, meters, args):
             if args.ipex:
                 with torch.no_grad():
                     for i in range(number_iter):
-                        with ipex.enable_auto_mix_precision(conf, running_mode="inference"):
+                        with ipex.AutoMixPrecision(conf, running_mode="inference"):
                             if i >= args.warmup_iterations:
                                 end = time.time()
                             if args.jit:
@@ -277,7 +277,7 @@ def validata(datasets, model, loss, meters, args):
                 with torch.no_grad():
                     end = _time(args.cuda)
                     for i, sample in enumerate(iterator):
-                        with ipex.enable_auto_mix_precision(conf, running_mode="inference"):
+                        with ipex.AutoMixPrecision(conf, running_mode="inference"):
                             data_time.update(_time(args.cuda) - end)
                             inputs = sample["input"]
                             target = sample["target"]
