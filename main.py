@@ -115,7 +115,7 @@ def main():
     if args.evaluate:
         if args.ipex:
             print("using ipex model to do inference\n")
-            model = model.to(device = 'dpcpp:0')
+            model = model.to(device = ipex.DEVICE)
         validata(datasets, model, loss, meters, args)
         return
 
@@ -189,9 +189,9 @@ def validata(datasets, model, loss, meters, args):
                     data_time.update(_time(args.cuda) - end)
                     inputs = sample["input"]
                     target = sample["target"]
-                    inputs["video"] = inputs["video"].to(device = 'dpcpp:0')
-                    inputs["audio"] = inputs["audio"].to(device = 'dpcpp:0')
-                    target = target.to(device = 'dpcpp:0')
+                    inputs["video"] = inputs["video"].to(device = ipex.DEVICE)
+                    inputs["audio"] = inputs["audio"].to(device = ipex.DEVICE)
+                    target = target.to(device = ipex.DEVICE)
                     if args.jit:
                         if i == 0:
                             trace_model = torch.jit.trace(model, inputs)
@@ -224,9 +224,9 @@ def validata(datasets, model, loss, meters, args):
             inputs["audio"] = torch.randn(args.batch_size_eval, 0, 1)
             target = torch.arange(1, args.batch_size_eval + 1).long()
             if args.ipex:
-                inputs["video"] = inputs["video"].to(device = 'dpcpp:0')
-                inputs["audio"] = inputs["audio"].to(device = 'dpcpp:0')
-                target = target.to(device = 'dpcpp:0')
+                inputs["video"] = inputs["video"].to(device = ipex.DEVICE)
+                inputs["audio"] = inputs["audio"].to(device = ipex.DEVICE)
+                target = target.to(device = ipex.DEVICE)
             if args.cuda:
                 inputs["video"] = inputs["video"].cuda()
                 inputs["audio"] = inputs["audio"].cuda()
@@ -282,8 +282,8 @@ def validata(datasets, model, loss, meters, args):
                             inputs = sample["input"]
                             target = sample["target"]
 
-                            inputs["video"] = inputs["video"].to(device = 'dpcpp:0')
-                            inputs["audio"] = inputs["audio"].to(device = 'dpcpp:0')
+                            inputs["video"] = inputs["video"].to(device = ipex.DEVICE)
+                            inputs["audio"] = inputs["audio"].to(device = ipex.DEVICE)
                             if args.jit:
                                 if i == 0:
                                     trace_model = torch.jit.trace(model, inputs)
@@ -316,8 +316,8 @@ def validata(datasets, model, loss, meters, args):
                             inputs["audio"] = inputs["audio"].cuda()
                             target = target.cuda()
                         elif args.ipex:
-                            inputs["video"] = inputs["video"].to(device = 'dpcpp:0')
-                            inputs["audio"] = inputs["audio"].to(device = 'dpcpp:0')
+                            inputs["video"] = inputs["video"].to(device = ipex.DEVICE)
+                            inputs["audio"] = inputs["audio"].to(device = ipex.DEVICE)
                         if args.jit:
                             if i == 0:
                                 trace_model = torch.jit.trace(model, inputs)
